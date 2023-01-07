@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iot-project-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      serv: dev-data-service
+  template:
+    metadata:
+      labels:
+        app: dev-data-service
+    spec:
+      containers:
+      - name: correct-server
+        image: correct-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iot-dev-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 9090
+    targetPort: 80
+  selector:
+    serv: dev-data-service
